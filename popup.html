@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Quick Redact</title>
+  <style>
+    body { font-family: Arial; padding: 16px; width: 230px; }
+    select, input, button { margin-top: 8px; width: 100%; }
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
+  <h3>Redact Selected Text</h3>
+  <label>Redact Style:</label>
+  <select id="redactType">
+    <option value="color">Solid Color</option>
+    <option value="stars">Stars (******)</option>
+    <option value="custom">Custom Text</option>
+  </select>
+  <input id="colorInput" type="color" value="#000000" />
+  <input id="customInput" class="hidden" type="text" placeholder="Enter replacement..." />
+  <button id="redactBtn">Redact</button>
+  <p style="font-size:12px;">Select text on the page first, then click Redact.</p>
+  <script src="popup.js"></script>
+</body>
+</html>

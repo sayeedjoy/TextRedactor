@@ -1,0 +1,14 @@
+{
+  "manifest_version": 3,
+  "name": "Text Redactor",
+  "version": "1.1",
+  "description": "Redact any text on any web page by selecting and replacing it with masks or custom input.",
+  "permissions": ["scripting", "activeTab", "contextMenus"],
+  "host_permissions": ["<all_urls>"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup.html"
+  }
+}
