@@ -48,7 +48,16 @@ function redactSelectedText(type, color, custom) {
     replacement = '*'.repeat(range.toString().length);
     replaceRange(range, replacement, {});
   } else if (type === 'custom') {
-    replacement = custom;
+    const selLength = range.toString().length;
+    if (!custom || custom.length === 0) {
+      replacement = '';
+    } else if (custom.length === selLength) {
+      replacement = custom;
+    } else if (custom.length < selLength) {
+      replacement = custom.repeat(Math.ceil(selLength / custom.length)).slice(0, selLength);
+    } else {
+      replacement = custom.slice(0, selLength);
+    }
     replaceRange(range, replacement, {});
   } else if (type === 'color') {
     replacement = range.toString();
@@ -75,5 +84,23 @@ function redactSelectedText(type, color, custom) {
 function promptForCustomRedact() {
   const custom = prompt("Enter replacement text:");
   if (custom === null || custom === "") return; // Cancelled or empty
-  redactSelectedText('custom', null, custom);
+  // Get the current selection and length in the page context
+  const selection = window.getSelection();
+  if (!selection || selection.rangeCount === 0) return;
+  const range = selection.getRangeAt(0);
+  const selLength = range.toString().length;
+  let replacement;
+  if (custom.length === selLength) {
+    replacement = custom;
+  } else if (custom.length < selLength) {
+    replacement = custom.repeat(Math.ceil(selLength / custom.length)).slice(0, selLength);
+  } else {
+    replacement = custom.slice(0, selLength);
+  }
+  // Use the same replaceRange logic as redactSelectedText
+  range.deleteContents();
+  const span = document.createElement('span');
+  span.textContent = replacement;
+  range.insertNode(span);
+  selection.removeAllRanges();
 }
