@@ -30,7 +30,16 @@ function redactSelectedText(type, color, custom) {
     replacement = '*'.repeat(range.toString().length);
     replaceRange(range, replacement, {});
   } else if (type === 'custom') {
-    replacement = custom;
+    const selLength = range.toString().length;
+    if (custom.length === 0) {
+      replacement = '';
+    } else if (custom.length === selLength) {
+      replacement = custom;
+    } else if (custom.length < selLength) {
+      replacement = custom.repeat(Math.ceil(selLength / custom.length)).slice(0, selLength);
+    } else {
+      replacement = custom.slice(0, selLength);
+    }
     replaceRange(range, replacement, {});
   } else if (type === 'color') {
     replacement = range.toString();
